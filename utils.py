@@ -377,34 +377,57 @@ def humanbytes(size):
         n += 1
     return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
 
+
 async def get_shortlink(link):
+
     https = link.split(":")[0]
+
     if "http" == https:
+
         https = "https"
+
         link = link.replace("http", https)
 
-    url = f'https://api.shareus.in/shortLink'
-    params = {'token': URL_SHORTNER_WEBSITE_API,
-              'link': link,
-              'format': 'json'
+    url = f'https://{URL_SHORTENR_WEBSITE}/api'
+
+    params = {'api': URL_SHORTNER_WEBSITE_API,
+
+              'url': link,
+
               }
 
     try:
+
         async with aiohttp.ClientSession() as session:
+
             async with session.get(url, params=params, raise_for_status=True, ssl=False) as response:
-                data = await response.json(content_type='text/html')
+
+                data = await response.json()
+
                 if data["status"] == "success":
-                    return data['shortlink']
+
+                    return data['shortenedUrl']
+
                 else:
+
                     logger.error(f"Error: {data['message']}")
-                    return f'https://api.shareus.in/directLink?token={URL_SHORTNER_WEBSITE_API}&link={link}'
+
+                    return f'https://{URL_SHORTENR_WEBSITE}/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
 
     except Exception as e:
+
         logger.error(e)
-        return f'https://api.shareus.in/directLink?token={URL_SHORTNER_WEBSITE_API}&link={link}'
-# _______________________________________________________________________________________________________________ #
-# __________________________________________Credit_______________________________________________________________ #
-# _______________________________________LazyDeveloper___________________________________________________________ #
-# _____________________________A real Developer always gives Credits_____________________________________________ #
-# ___________________________B O R N -- T O -- M A K E -- H I S T O R Y__________________________________________ #
-# _______________________________________________________________________________________________________________ #
+
+        return f'https://{URL_SHORTENR_WEBSITE}/api?api={URL_SHORTNER_WEBSITE_API}&link={link}'
+
+# _______________________ #
+
+# ________Credit_____________ #
+
+# _________LazyDeveloper_____________ #
+
+# _______A real Developer always gives Credits___________ #
+
+# _____B O R N -- T O -- M A K E -- H I S T O R Y________ #
+
+# _______________________ #
